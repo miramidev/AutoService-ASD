@@ -51,6 +51,8 @@ public abstract class BasePanel extends JPanel {
         table.setFont(new Font("SansSerif", Font.PLAIN, 13));
         table.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 13));
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.getTableHeader().setBackground(ColorsStorage.buttonReset);
+        table.getTableHeader().setForeground(Color.WHITE);
 
         return new JScrollPane(table);
     }
