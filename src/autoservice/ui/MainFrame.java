@@ -1,12 +1,9 @@
 package autoservice.ui;
 
-import autoservice.helper.ColorsStorage;
-
 import javax.swing.*;
 import java.awt.*;
 
 import static autoservice.helper.ColorsStorage.backgroundColor;
-import static autoservice.helper.ColorsStorage.defaultTextColor;
 
 public class MainFrame extends JFrame {
 
@@ -24,32 +21,10 @@ public class MainFrame extends JFrame {
     private void CreateTabs()
     {
         var tabs = new JTabbedPane();
-        tabs.setBackground(backgroundColor);
-        tabs.setForeground(defaultTextColor);
 
-        JPanel carsPanel = new JPanel();
-        carsPanel.setBackground(ColorsStorage.backgroundColor);
-        CreateTestTabView(carsPanel, "Автомобили");
-
-        JPanel ordersPanel = new JPanel();
-        ordersPanel.setBackground(backgroundColor);
-        CreateTestTabView(ordersPanel, "Заказы");
-
-        JPanel statsPanel = new JPanel();
-        statsPanel.setBackground(backgroundColor);
-        CreateTestTabView(statsPanel, "Статистика");
-
-        tabs.addTab("Автомобили", carsPanel);
-        tabs.addTab("Заказы", ordersPanel);
-        tabs.addTab("Статистика", statsPanel);
+        tabs.addTab("Автомобили", new CarsPanel());
+        tabs.addTab("Заказы",     new OrdersPanel());
+        tabs.addTab("Статистика", new StatsPanel());
         add(tabs);
-    }
-
-    private void CreateTestTabView(JPanel panel, String title)
-    {
-        JLabel label = new JLabel(title, SwingConstants.CENTER);
-        label.setFont(new Font("SansSerif", Font.BOLD, 24));
-        label.setForeground(ColorsStorage.defaultTextColor);
-        panel.add(label);
     }
 }
