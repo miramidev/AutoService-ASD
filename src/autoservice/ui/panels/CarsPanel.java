@@ -2,6 +2,7 @@ package autoservice.ui.panels;
 
 import autoservice.dao.CarDAO;
 import autoservice.helper.ColorsStorage;
+import autoservice.helper.UIHelper;
 import autoservice.model.Car;
 import autoservice.ui.CarFormDialog;
 
@@ -28,9 +29,9 @@ public class CarsPanel extends BasePanel {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 8));
         panel.setBackground(ColorsStorage.backgroundColor);
 
-        JButton addBtn = new JButton("Добавить");
-        JButton editBtn = new JButton("Редактировать");
-        JButton deleteBtn = new JButton("Удалить");
+        JButton addBtn = UIHelper.createButton("Добавить", ColorsStorage.buttonAdd);
+        JButton editBtn = UIHelper.createButton("Редактировать", ColorsStorage.buttonEdit);
+        JButton deleteBtn = UIHelper.createButton("Удалить", ColorsStorage.buttonDelete);
 
         addBtn.addActionListener(_ -> openForm(null));
         editBtn.addActionListener(_ -> {
@@ -52,8 +53,8 @@ public class CarsPanel extends BasePanel {
 
         searchCombo = new JComboBox<>(new String[]{"Марке", "Владельцу", "Номеру"});
         searchField = new JTextField(18);
-        JButton searchBtn = new JButton("Найти");
-        JButton resetBtn = new JButton("Сбросить");
+        JButton searchBtn = UIHelper.createButton("Найти", ColorsStorage.buttonSearch);
+        JButton resetBtn = UIHelper.createButton("Сбросить", ColorsStorage.buttonReset);
 
         searchBtn.addActionListener(_ -> doSearch());
         resetBtn.addActionListener(_ -> {

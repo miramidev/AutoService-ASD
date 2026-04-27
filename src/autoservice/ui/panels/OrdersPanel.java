@@ -3,6 +3,7 @@ package autoservice.ui.panels;
 import autoservice.dao.CarDAO;
 import autoservice.dao.OrderDAO;
 import autoservice.helper.ColorsStorage;
+import autoservice.helper.UIHelper;
 import autoservice.model.Order;
 import autoservice.model.Order.Status;
 import autoservice.ui.OrderFormDialog;
@@ -31,9 +32,9 @@ public class OrdersPanel extends BasePanel {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 8));
         panel.setBackground(ColorsStorage.backgroundColor);
 
-        JButton addBtn = new JButton("Новый заказ");
-        JButton editBtn = new JButton("Редактировать");
-        JButton deleteBtn = new JButton("Удалить");
+        JButton addBtn = UIHelper.createButton("Новый заказ", ColorsStorage.buttonAdd);
+        JButton editBtn = UIHelper.createButton("Редактировать", ColorsStorage.buttonEdit);
+        JButton deleteBtn = UIHelper.createButton("Удалить", ColorsStorage.buttonDelete);
 
         addBtn.addActionListener(_ -> openForm(null));
         editBtn.addActionListener(_ -> {
@@ -67,8 +68,8 @@ public class OrdersPanel extends BasePanel {
             statusCombo.setVisible(isStatus);
         });
 
-        JButton searchBtn = new JButton("Найти");
-        JButton resetBtn = new JButton("Сбросить");
+        JButton searchBtn = UIHelper.createButton("Найти", ColorsStorage.buttonSearch);
+        JButton resetBtn = UIHelper.createButton("Сбросить", ColorsStorage.buttonReset);
 
         searchBtn.addActionListener(_ -> doSearch());
         resetBtn.addActionListener(_ -> {
