@@ -6,15 +6,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class BasePanel extends JPanel {
-    public BasePanel(String title)
+    public BasePanel()
     {
         setLayout(new BorderLayout());
         setBackground(ColorsStorage.backgroundColor);
-
-        JLabel label = new JLabel(title, SwingConstants.CENTER);
-        label.setFont(new Font("SansSerif", Font.BOLD, 24));
-        label.setForeground(ColorsStorage.defaultTextColor);
-
-        add(label, BorderLayout.CENTER);
     }
 }
