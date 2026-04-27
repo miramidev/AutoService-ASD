@@ -76,8 +76,6 @@ public class CarsPanel extends BasePanel {
         table.setFont(new Font("SansSerif", Font.PLAIN, 13));
         table.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 13));
 
-        JScrollPane scrollPane = new JScrollPane(table);
-
-        return scrollPane;
+        return new JScrollPane(table);
     }
 }
