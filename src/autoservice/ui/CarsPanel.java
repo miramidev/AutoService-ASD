@@ -13,6 +13,8 @@ public class CarsPanel extends BasePanel {
     private final CarDAO carDAO = new CarDAO();
     private DefaultTableModel tableModel;
     private JTable table;
+    private JComboBox<String> searchCombo;
+    private JTextField searchField;
 
     public CarsPanel() {
         super();
@@ -27,6 +29,7 @@ public class CarsPanel extends BasePanel {
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBackground(ColorsStorage.backgroundColor);
         topPanel.add(getButtonsPanel(), BorderLayout.NORTH);
+        topPanel.add(getSearchPanel(), BorderLayout.SOUTH);
 
         return topPanel;
     }
@@ -39,19 +42,44 @@ public class CarsPanel extends BasePanel {
         JButton editBtn = new JButton("Редактировать");
         JButton deleteBtn = new JButton("Удалить");
 
-        addBtn.addActionListener(e -> openForm(null));
-        editBtn.addActionListener(e -> {
+        addBtn.addActionListener(_ -> openForm(null));
+        editBtn.addActionListener(_ -> {
             Car selected = getSelectedCar();
             if (selected != null) {
                 openForm(selected);
             }
         });
+        deleteBtn.addActionListener(_ -> deleteSelected());
 
         buttonPanel.add(addBtn);
         buttonPanel.add(editBtn);
         buttonPanel.add(deleteBtn);
 
         return buttonPanel;
+    }
+
+    private JPanel getSearchPanel() {
+        JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 8));
+        searchPanel.setBackground(ColorsStorage.backgroundColor);
+
+        searchCombo = new JComboBox<>(new String[]{"Марке", "Владельцу", "Номеру"});
+        searchField = new JTextField(18);
+        JButton searchBtn = new JButton("Найти");
+        JButton resetBtn = new JButton("Сбросить");
+
+        searchBtn.addActionListener(_ -> doSearch());
+        resetBtn.addActionListener(_ -> {
+            searchField.setText("");
+            loadTable(carDAO.findAll());
+        });
+
+        searchPanel.add(new JLabel("Поиск по:"));
+        searchPanel.add(searchCombo);
+        searchPanel.add(searchField);
+        searchPanel.add(searchBtn);
+        searchPanel.add(resetBtn);
+
+        return searchPanel;
     }
 
     private JScrollPane getTable() {
@@ -62,7 +90,7 @@ public class CarsPanel extends BasePanel {
             }
         };
 
-        JTable table = new JTable(tableModel);
+        table = new JTable(tableModel);
         table.setRowHeight(28);
         table.setFont(new Font("SansSerif", Font.PLAIN, 13));
         table.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 13));
@@ -78,11 +106,44 @@ public class CarsPanel extends BasePanel {
         }
     }
 
+    private void doSearch() {
+        String query = searchField.getText().trim();
+        if (query.isEmpty()) {
+            loadTable(carDAO.findAll());
+            return;
+        }
+
+        int idx = searchCombo.getSelectedIndex();
+        List<Car> result;
+        if (idx == 0) {
+            result = carDAO.searchByBrand(query);
+        } else if (idx == 1) {
+            result = carDAO.searchByOwner(query);
+        } else {
+            result = carDAO.searchByPlate(query);
+        }
+
+        loadTable(result);
+    }
+
     private void openForm(Car car) {
         JFrame parent = (JFrame) SwingUtilities.getWindowAncestor(this);
         CarFormDialog dialog = new CarFormDialog(parent, car, carDAO);
         dialog.setVisible(true);
         loadTable(carDAO.findAll());
+    }
+
+    private void deleteSelected() {
+        Car car = getSelectedCar();
+        if (car == null) {
+            return;
+        }
+
+        int confirm = JOptionPane.showConfirmDialog(this, "Удалить " + car.getBrand() + " " + car.getModel() + "?", "Подтверждение", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            carDAO.delete(car.getId());
+            loadTable(carDAO.findAll());
+        }
     }
 
     private Car getSelectedCar() {

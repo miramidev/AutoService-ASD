@@ -57,10 +57,49 @@ public class CarDAO {
         writeAll(all);
     }
 
+    public void delete(int id) {
+        List<Car> all = findAll();
+        all.removeIf(c -> c.getId() == id);
+        writeAll(all);
+    }
+
+    public List<Car> searchByBrand(String brand) {
+        List<Car> result = new ArrayList<>();
+        for (Car c : findAll())
+            if (c.getBrand().toLowerCase().contains(brand.toLowerCase())) {
+                result.add(c);
+            }
+
+        return result;
+    }
+
+    public List<Car> searchByOwner(String owner) {
+        List<Car> result = new ArrayList<>();
+        for (Car c : findAll())
+            if (c.getOwnerName().toLowerCase().contains(owner.toLowerCase())) {
+                result.add(c);
+            }
+
+        return result;
+    }
+
+    public List<Car> searchByPlate(String plate) {
+        List<Car> result = new ArrayList<>();
+        for (Car c : findAll())
+            if (c.getLicensePlate().toLowerCase().contains(plate.toLowerCase())) {
+                result.add(c);
+            }
+
+        return result;
+    }
+
     private int nextId(List<Car> list) {
         int max = 0;
         for (Car c : list)
-            if (c.getId() > max) max = c.getId();
+            if (c.getId() > max) {
+                max = c.getId();
+            }
+
         return max + 1;
     }
 

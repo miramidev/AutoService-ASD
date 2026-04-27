@@ -8,7 +8,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public class CarFormDialog extends JDialog {
-
     private final CarDAO carDAO;
     private final Car car;
     private JTextField brandField;
@@ -63,6 +62,7 @@ public class CarFormDialog extends JDialog {
         gbc.weightx = 1.0;
         JTextField field = new JTextField(value, 18);
         panel.add(field, gbc);
+
         return field;
     }
 
@@ -73,20 +73,17 @@ public class CarFormDialog extends JDialog {
         JButton saveBtn = new JButton("Сохранить");
         JButton cancelBtn = new JButton("Отмена");
 
-        saveBtn.addActionListener(e -> doSave());
-        cancelBtn.addActionListener(e -> dispose()); // dispose = закрыть диалог
+        saveBtn.addActionListener(_ -> doSave());
+        cancelBtn.addActionListener(_ -> dispose());
 
         panel.add(saveBtn);
         panel.add(cancelBtn);
+
         return panel;
     }
 
     private void doSave() {
-        // Валидация
-        if (brandField.getText().trim().isEmpty() ||
-                modelField.getText().trim().isEmpty() ||
-                plateField.getText().trim().isEmpty() ||
-                ownerField.getText().trim().isEmpty()) {
+        if (brandField.getText().trim().isEmpty() || modelField.getText().trim().isEmpty() || plateField.getText().trim().isEmpty() || ownerField.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Заполните все поля!", "Ошибка", JOptionPane.ERROR_MESSAGE);
             return;
         }

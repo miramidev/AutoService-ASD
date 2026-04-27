@@ -1,10 +1,11 @@
 package autoservice;
 
 import autoservice.ui.MainFrame;
-import javax.swing.SwingUtilities;
+
+import javax.swing.*;
 
 public class Main {
-    public static void main(String[] args) {
+    static void main() {
         SwingUtilities.invokeLater(() -> {
             MainFrame frame = new MainFrame();
             frame.setVisible(true);
