@@ -1,14 +1,12 @@
 package autoservice.ui;
 
 import javax.swing.*;
-import java.awt.*;
 
 import static autoservice.helper.ColorsStorage.backgroundColor;
 
 public class MainFrame extends JFrame {
 
-    public MainFrame()
-    {
+    public MainFrame() {
         setTitle("Автосервис");
         setSize(1000, 600);
         setLocationRelativeTo(null);
@@ -18,12 +16,11 @@ public class MainFrame extends JFrame {
         CreateTabs();
     }
 
-    private void CreateTabs()
-    {
+    private void CreateTabs() {
         var tabs = new JTabbedPane();
 
         tabs.addTab("Автомобили", new CarsPanel());
-        tabs.addTab("Заказы",     new OrdersPanel());
+        tabs.addTab("Заказы", new OrdersPanel());
         tabs.addTab("Статистика", new StatsPanel());
         add(tabs);
     }
