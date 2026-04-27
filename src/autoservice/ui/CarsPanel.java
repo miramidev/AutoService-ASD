@@ -1,20 +1,25 @@
 package autoservice.ui;
 
+import autoservice.dao.CarDAO;
 import autoservice.helper.ColorsStorage;
+import autoservice.model.Car;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.List;
 
 public class CarsPanel extends BasePanel {
+    private final CarDAO carDAO = new CarDAO();
+    private DefaultTableModel tableModel;
+
     public CarsPanel() {
         super();
 
-        var topPanel = getTopPanel();
-        var table = getTable();
+        add(getTopPanel(), BorderLayout.NORTH);
+        add(getTable(), BorderLayout.CENTER);
 
-        add(table, BorderLayout.CENTER);
-        add(topPanel, BorderLayout.NORTH);
+        loadTable(carDAO.findAll());
     }
 
     private JPanel getTopPanel() {
@@ -65,17 +70,27 @@ public class CarsPanel extends BasePanel {
 
     private JScrollPane getTable() {
         String[] columns = {"ID", "Марка", "Модель", "Гос. номер", "Год", "Владелец", "Телефон"};
-        DefaultTableModel tableModel = new DefaultTableModel(columns, 0) {
-            public boolean isCellEditable(int row, int col) {
-                return false;
-            }
+        tableModel = new DefaultTableModel(columns, 0) {
+            public boolean isCellEditable(int row, int col) { return false; }
         };
 
         JTable table = new JTable(tableModel);
         table.setRowHeight(28);
         table.setFont(new Font("SansSerif", Font.PLAIN, 13));
         table.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 13));
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         return new JScrollPane(table);
+    }
+
+    private void loadTable(List<Car> cars) {
+        tableModel.setRowCount(0);
+        for (Car c : cars) {
+            tableModel.addRow(new Object[]{
+                    c.getId(), c.getBrand(), c.getModel(),
+                    c.getLicensePlate(), c.getYear(),
+                    c.getOwnerName(), c.getOwnerPhone()
+            });
+        }
     }
 }
