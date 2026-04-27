@@ -2,9 +2,7 @@ package autoservice.dao;
 
 import autoservice.model.Car;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,8 +29,7 @@ public class CarDAO {
                     continue;
                 }
 
-                Car car = new Car(Integer.parseInt(p[0].trim()), p[1].trim(), p[2].trim(), p[3].trim(),
-                        Integer.parseInt(p[4].trim()), p[5].trim(), p[6].trim());
+                Car car = new Car(Integer.parseInt(p[0].trim()), p[1].trim(), p[2].trim(), p[3].trim(), Integer.parseInt(p[4].trim()), p[5].trim(), p[6].trim());
 
                 list.add(car);
             }
@@ -41,5 +38,40 @@ public class CarDAO {
         }
 
         return list;
+    }
+
+    public void save(Car car) {
+        List<Car> all = findAll();
+
+        if (car.getId() == 0) {
+            car.setId(nextId(all));
+            all.add(car);
+        } else {
+            for (int i = 0; i < all.size(); i++) {
+                if (all.get(i).getId() == car.getId()) {
+                    all.set(i, car);
+                    break;
+                }
+            }
+        }
+        writeAll(all);
+    }
+
+    private int nextId(List<Car> list) {
+        int max = 0;
+        for (Car c : list)
+            if (c.getId() > max) max = c.getId();
+        return max + 1;
+    }
+
+    private void writeAll(List<Car> list) {
+        try (PrintWriter pw = new PrintWriter(new FileWriter(CarFile))) {
+            for (Car c : list) {
+                pw.println(c.getId() + ";" + c.getBrand() + ";" + c.getModel() + ";" + c.getLicensePlate() + ";" +
+                        c.getYear() + ";" + c.getOwnerName() + ";" + c.getOwnerPhone());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
